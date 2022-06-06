@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "./../../../context/CartContext";
 import axios from "axios";
-import  data  from "./db.json";
 
 const Product = () => {
   // Note: this id should come from api
   const product = { id: 1 };
 
-  const [prodItems, setProdItems] = useState(data.products);
-  const [cartData, setCartData] = useState(data.cartItems);
+  const [prodItems, setProdItems] = useState({});
+  const [cartData, setCartData] = useState({});
   const { id } = useParams();
 
   const { count, setCount } = useContext(CartContext);
@@ -18,7 +17,6 @@ const Product = () => {
     let updatedData = cartData.filter((cartD) => cartD.id !== id);
     setCartData(updatedData);
   };
-  
 
   const handleInc = () => {
     setCount(count + 1);
@@ -31,7 +29,7 @@ const Product = () => {
   useEffect(() => {
     if (id) {
       const getData = async () => {
-        let res = await axios.get(`http://localhost:1001/products/${id}`);
+        let res = await axios.get(`${process.env.REACT_APP_URL}/products/${id}`);
         let data = await res.data;
         //console.log(data);
         setProdItems(data);
@@ -42,7 +40,7 @@ const Product = () => {
 
   useEffect(() => {
     const getData = async () => {
-      let res = await axios.get(`http://localhost:1001/cartItems`);
+      let res = await axios.get(`${process.env.REACT_APP_URL}/cartItems`);
       let data = await res.data;
       //console.log(data);
       setCartData(data);
@@ -50,22 +48,19 @@ const Product = () => {
     getData();
   }, []);
 
+  // const handleAddToCart = async () => {
+  //   let res = axios.post(`http://localhost:1001/cartItems`, {
 
-  const handleAddToCart = async () => {
-    let res = axios.post(`http://localhost:1001/cartItems`, {
-
-    });
-    let data = res.data;
-    setCartData([ ...cartData, data]);
-  }
+  //   });
+  //   let data = res.data;
+  //   setCartData([ ...cartData, data]);
+  // }
 
   return (
     <div data-cy={`product-${product.id}`}>
       <h3 data-cy="product-name">{prodItems.name}</h3>
       <h6 data-cy="product-description">{prodItems.description}</h6>
-      <button onClick={handleAddToCart} data-cy="product-add-item-to-cart-button">
-        Add to Cart
-      </button>
+      <button data-cy="product-add-item-to-cart-button">Add to Cart</button>
       <div>
         <button
           onClick={handleInc}
@@ -73,9 +68,7 @@ const Product = () => {
         >
           Inc
         </button>
-        <span data-cy="product-count">
-          {count}
-        </span>
+        <span data-cy="product-count">{count}</span>
         <button
           onClick={handleDec}
           data-cy="product-decrement-cart-item-count-button"
