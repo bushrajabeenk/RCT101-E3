@@ -29,7 +29,7 @@ const Product = () => {
   useEffect(() => {
     if (id) {
       const getData = async () => {
-        let res = await axios.get(`${process.env.REACT_APP_URL}/products/${id}`);
+        let res = await axios.get(`http://localhost:1001/products/${id}`);
         let data = await res.data;
         //console.log(data);
         setProdItems(data);
@@ -40,7 +40,7 @@ const Product = () => {
 
   useEffect(() => {
     const getData = async () => {
-      let res = await axios.get(`${process.env.REACT_APP_URL}/cartItems`);
+      let res = await axios.get(`http://localhost:1001/cartItems`);
       let data = await res.data;
       //console.log(data);
       setCartData(data);
