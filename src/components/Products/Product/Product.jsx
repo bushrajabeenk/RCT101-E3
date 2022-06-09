@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CartContext } from "./../../../context/CartContext";
+import { CartContext } from "../../../context/CartContext";
 import axios from "axios";
 
 const Product = () => {
